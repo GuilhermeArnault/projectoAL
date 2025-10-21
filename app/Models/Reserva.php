@@ -20,7 +20,7 @@ class Reserva extends Model
         'total',
     ];
 
-    // 🔗 Relações
+    // Relações
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -35,4 +35,6 @@ class Reserva extends Model
     {
         return $this->hasOne(Pagamento::class);
     }
+
+    public function logs() { return $this->hasMany(ReservaLog::class); }
 }

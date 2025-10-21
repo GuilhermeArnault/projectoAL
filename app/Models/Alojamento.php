@@ -37,5 +37,8 @@ class Alojamento extends Model
     {
         return $this->hasMany(Video::class);
     }
+    
+    public function bloqueios() { return $this->hasMany(Bloqueio::class); }
+
 }
 

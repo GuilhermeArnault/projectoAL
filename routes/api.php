@@ -6,6 +6,9 @@ use App\Http\Controllers\API\AlojamentoController;
 use App\Http\Controllers\API\ReservaController;
 use App\Http\Controllers\API\ComentarioController;
 use App\Http\Controllers\API\AdminController;
+use App\Http\Controllers\API\TokenAuthController;
+use App\Http\Controllers\API\AuthController;
+
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -29,3 +32,7 @@ Route::middleware(['auth:sanctum', 'isAdmin'])->prefix('admin')->group(function 
     Route::patch('/reservas/{id}/estado', [AdminController::class, 'alterarEstado']);
     Route::get('/relatorios/ocupacao', [AdminController::class, 'relatorioOcupacao']);
 });
+
+Route::post('/login-token', [TokenAuthController::class, 'login']);
+Route::middleware('auth:sanctum')->post('/logout-token', [TokenAuthController::class, 'logout']);
+Route::post('/login', [AuthController::class, 'login']);

@@ -17,6 +17,11 @@ Route::get('/', function () {
     return Inertia::render('Home');
 });
 
+Route::get('/reservas', function () {
+    return Inertia::render('Reservas');
+});
+
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),

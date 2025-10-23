@@ -14,11 +14,10 @@ return new class extends Migration
         Schema::create('reserva_logs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('reserva_id')->constrained('reservas')->onDelete('cascade');
-            $table->string('estado_anterior')->nullable();
-            $table->string('estado_novo');
-            $table->foreignId('alterado_por')->constrained('users')->onDelete('cascade');
+            $table->string('acao'); // Ex: criada, cancelada, confirmada
+            $table->text('detalhes')->nullable();
             $table->timestamps();
-        });
+    });
     }
 
     /**

@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('titulo');
             $table->text('descricao')->nullable();
             $table->decimal('preco_noite', 8, 2);
-            $table->string('endereco')->nullable();
             $table->timestamps();
         });
     }

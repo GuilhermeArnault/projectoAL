@@ -12,6 +12,8 @@ services:
       - ./:/var/www
     networks:
       - laravel
+    depends_on:
+      - db
     ports:
       - "9000:9000"
 

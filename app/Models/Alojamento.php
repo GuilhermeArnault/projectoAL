@@ -10,14 +10,12 @@ class Alojamento extends Model
     use HasFactory;
 
     protected $fillable = [
-        'nome',
+        'titulo',
         'descricao',
         'preco_noite',
-        'capacidade',
-        'localizacao',
     ];
 
-    // 🔗 Relações
+    // Relações
     public function reservas()
     {
         return $this->hasMany(Reserva::class);

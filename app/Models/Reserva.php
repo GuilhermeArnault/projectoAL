@@ -14,10 +14,10 @@ class Reserva extends Model
     protected $fillable = [
         'user_id',
         'alojamento_id',
-        'data_checkin',
-        'data_checkout',
+        'data_inicio',
+        'data_fim',
         'estado',
-        'total',
+        'preco_total',
     ];
 
     // Relações

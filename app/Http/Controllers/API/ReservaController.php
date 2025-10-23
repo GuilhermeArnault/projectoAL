@@ -23,7 +23,7 @@ class ReservaController extends Controller
      */
     public function store(Request $request)
     {
-$request->validate([
+        $request->validate([
             'alojamento_id' => 'required|exists:alojamentos,id',
             'checkin' => 'required|date',
             'checkout' => 'required|date|after:checkin',

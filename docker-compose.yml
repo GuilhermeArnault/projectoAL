@@ -13,7 +13,7 @@ services:
     networks:
       - laravel
     depends_on:
-      - db
+      -  db
     ports:
       - "9000:9000"
 

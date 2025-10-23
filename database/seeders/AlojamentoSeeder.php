@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Alojamento;
+use Illuminate\Database\Seeder;
 
 class AlojamentoSeeder extends Seeder
 {

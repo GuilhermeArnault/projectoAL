@@ -18,11 +18,12 @@ class Reserva extends Model
         'preco_total'
     ];
 
-    // Cálculo automático do preço
-    public static function calcularPreco($inicio, $fim, $precoPorHora = 10)
+    public static function calcularPreco($inicio, $fim)
     {
-        $horas = (strtotime($fim) - strtotime($inicio)) / 3600;
-        return $horas * $precoPorHora;
+        $dias = (new \DateTime($inicio))->diff(new \DateTime($fim))->days;
+        $precoPorNoite = 100; // Podes mudar para um campo vindo do alojamento
+        return $dias * $precoPorNoite;
     }
+
 }
 

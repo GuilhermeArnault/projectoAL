@@ -1,4 +1,4 @@
-<script setup>
+<script>
 import AppLayout from '@/Layouts/AppLayout.vue';
 import Welcome from '@/Components/Welcome.vue';
 import axiosInstance from '../axios'; // Importa a configuração do Axios

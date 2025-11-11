@@ -1,6 +1,6 @@
 <?php
 
-<?php
+
 
 namespace App\Http\Controllers;
 
@@ -55,4 +55,3 @@ class ComentarioController extends Controller
         return response()->json(['message' => 'Comentário eliminado com sucesso.']);
     }
 }
-

@@ -10,6 +10,7 @@ use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\AlojamientoController;
 use App\Http\Controllers\API\ComentarioController;
 use App\Http\Controllers\API\AdminController;
+use App\Http\Controllers\Admin\ComentariosController;
 
 //  Rota para obter o utilizador autenticado
 Route::get('/user', function (Request $request) {
@@ -53,3 +54,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
 });
 
 Route::get('/public/conversao', [CurrencyController::class, 'convert']);
+
+
+Route::middleware(['auth:sanctum', 'role:admin'])
+    ->prefix('admin')
+    ->group(function () {
+        Route::get('/comentarios', [ComentariosController::class, 'index']);
+        Route::delete('/comentarios/{id}', [ComentariosController::class, 'destroy']);
+        Route::patch('/comentarios/{id}/toggle', [ComentariosController::class, 'toggleAprovado']);
+    });

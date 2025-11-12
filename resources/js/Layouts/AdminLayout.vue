@@ -7,21 +7,11 @@
         Painel Admin
       </div>
       <nav class="flex-1 p-4 space-y-2">
-        <RouterLink class="block px-3 py-2 rounded hover:bg-[#9faea0]" to="/admin">
-          Dashboard
-        </RouterLink>
-        <RouterLink class="block px-3 py-2 rounded hover:bg-[#9faea0]" to="/admin/reservas">
-          Reservas
-        </RouterLink>
-        <RouterLink class="block px-3 py-2 rounded hover:bg-[#9faea0]" to="/admin/utilizadores">
-          Utilizadores
-        </RouterLink>
-        <RouterLink class="block px-3 py-2 rounded hover:bg-[#9faea0]" to="/admin/alojamento">
-          Alojamento
-        </RouterLink>
-        <RouterLink class="block px-3 py-2 rounded hover:bg-[#9faea0]" to="/admin/comentarios">
-          Comentários
-        </RouterLink>
+      <Link :href="route('admin.dashboard')" class="block p-2 hover:bg-gray-200">Dashboard</Link>
+        <Link :href="route('admin.reservas')" class="block p-2 hover:bg-gray-200">Reservas</Link>
+        <Link :href="route('admin.utilizadores')" class="block p-2 hover:bg-gray-200">Utilizadores</Link>
+        <Link :href="route('admin.alojamento')" class="block p-2 hover:bg-gray-200">Alojamento</Link>
+        <Link :href="route('admin.comentarios')" class="block p-2 hover:bg-gray-200">Comentários</Link>
       </nav>
     </aside>
 

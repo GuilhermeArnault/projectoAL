@@ -41,7 +41,9 @@ Route::middleware([
     Route::get('/', fn() => Inertia::render('Admin/Dashboard'))->name('admin.dashboard');
     Route::get('/reservas', fn() => Inertia::render('Admin/ReservasAdmin'))->name('admin.reservas');
     Route::get('/utilizadores', fn() => Inertia::render('Admin/Utilizadores'))->name('admin.utilizadores');
+    Route::get('/comentarios', fn() => Inertia::render('Admin/ComentariosAdmin'))->name('admin.comentarios');
 });
+
 
 
 Route::get('/alojamentos', function () {

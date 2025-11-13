@@ -38,27 +38,6 @@
             <section class="flex-1 space-y-6">
                 <h2 class="text-2xl font-semibold mb-4">Datas</h2>
 
-                <!-- Mensagens de erro -->
-                <div
-                    v-if="errors.length"
-                    class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
-                >
-                    <strong class="font-bold">Erro!</strong>
-                    <ul class="list-disc list-inside mt-2">
-                        <li v-for="(error, index) in errors" :key="index">
-                            {{ error }}
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Mensagem de sucesso -->
-                <div
-                    v-if="successMessage"
-                    class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative"
-                >
-                    {{ successMessage }}
-                </div>
-
                 <!-- Campos -->
                 <div
                     class="bg-white p-6 rounded-lg shadow-md flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0"
@@ -70,8 +49,6 @@
                         <input
                             type="date"
                             v-model="checkin"
-                            :min="minDate"
-                            @change="verificarDisponibilidade"
                             class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-primary outline-none"
                         />
                     </div>
@@ -83,8 +60,6 @@
                         <input
                             type="date"
                             v-model="checkout"
-                            :min="checkin"
-                            @change="verificarDisponibilidade"
                             class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-primary outline-none"
                         />
                     </div>
@@ -109,39 +84,6 @@
                         </button>
                     </div>
                 </div>
-
-                <!-- Status de disponibilidade -->
-                <div v-if="disponibilidadeChecada" class="mt-4">
-                    <div
-                        v-if="alojamentoDisponivel"
-                        class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded"
-                    >
-                        ✓ Alojamento disponível para estas datas!
-                    </div>
-                    <div
-                        v-else
-                        class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded"
-                    >
-                        ⚠ Alojamento não disponível para estas datas.
-                    </div>
-                </div>
-
-                <!-- Observações -->
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <label class="block text-sm font-medium text-dark mb-2"
-                        >Observações (opcional)</label
-                    >
-                    <textarea
-                        v-model="observacoes"
-                        rows="4"
-                        maxlength="1000"
-                        placeholder="Alguma informação adicional..."
-                        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-primary outline-none"
-                    ></textarea>
-                    <span class="text-xs text-gray-500"
-                        >{{ observacoes.length }}/1000</span
-                    >
-                </div>
             </section>
 
             <!-- Resumo -->
@@ -152,13 +94,13 @@
 
                 <div class="flex items-center mb-4 space-x-3 border-b pb-4">
                     <img
-                        :src="alojamento.imagem || '/images/casa1.jpg'"
+                        src="/images/casa1.jpg"
                         alt="Alojamento"
                         class="w-16 h-16 rounded object-cover"
                     />
                     <div>
                         <h4 class="text-sm font-medium text-dark">
-                            {{ alojamento.nome || "Casa do Sol" }}
+                            Casa do Sol
                         </h4>
                         <button
                             class="text-xs text-accent hover:underline mt-1"
@@ -170,7 +112,7 @@
 
                 <div class="flex justify-between text-sm text-dark/70 mb-2">
                     <span>Estadia</span>
-                    <span>{{ noites }} noite{{ noites > 1 ? "s" : "" }}</span>
+                    <span>{{ noites }} noites</span>
                 </div>
                 <div class="flex justify-between text-sm text-dark/70 mb-2">
                     <span>Preço/noite</span>
@@ -189,46 +131,26 @@
             class="fixed bottom-0 left-0 w-full bg-white shadow-inner p-4 flex justify-center"
         >
             <button
-                class="bg-accent text-dark font-semibold px-8 py-3 rounded-lg hover:bg-yellow-300 transition disabled:opacity-50 disabled:cursor-not-allowed"
-                @click="criarReserva"
-                :disabled="!podeReservar || loading"
+                class="bg-accent text-dark font-semibold px-8 py-3 rounded-lg hover:bg-yellow-300 transition"
+                @click="continuar"
             >
-                {{ loading ? "Aguarde..." : "Continuar" }}
+                Continuar
             </button>
         </div>
     </div>
 </template>
 
 <script setup>
+// Importa o ref e computed do Vue
 import { ref, computed, onMounted } from "vue";
-import { useRouter } from "vue-router";
-import axiosInstance from "../axios";
+import axiosInstance from "../axios"; // Importa a configuração do Axios
 
-const router = useRouter();
-
-// Variáveis reativas
+// Variáveis do Vue
 const checkin = ref("");
 const checkout = ref("");
 const hospedes = ref(1);
-const observacoes = ref("");
-const alojamentoId = ref(1); // TODO: Buscar da rota ou props
-const alojamento = ref({});
-const precoNoite = computed(() => alojamento.value.preco_noite || 100);
+const precoNoite = 100;
 
-// Estados
-const errors = ref([]);
-const successMessage = ref("");
-const loading = ref(false);
-const disponibilidadeChecada = ref(false);
-const alojamentoDisponivel = ref(false);
-
-// Data mínima (hoje)
-const minDate = computed(() => {
-    const hoje = new Date();
-    return hoje.toISOString().split("T")[0];
-});
-
-// Calcular noites
 const noites = computed(() => {
     if (!checkin.value || !checkout.value) return 0;
     const d1 = new Date(checkin.value);
@@ -237,105 +159,27 @@ const noites = computed(() => {
     return diff > 0 ? diff : 0;
 });
 
-// Calcular total
-const total = computed(() => noites.value * precoNoite.value);
+const total = computed(() => noites.value * precoNoite);
 
-// Verificar se pode fazer reserva
-const podeReservar = computed(() => {
-    return (
-        checkin.value &&
-        checkout.value &&
-        noites.value > 0 &&
-        alojamentoDisponivel.value
+const continuar = () => {
+    alert(
+        "Reserva guardada temporariamente! A seguir adicionamos o passo de contacto."
     );
-});
+};
 
-// Buscar informações do alojamento
-const buscarAlojamento = async () => {
+// Função para buscar os dados da API (exemplo)
+const fetchData = async () => {
     try {
-        const response = await axiosInstance.get(
-            `/alojamentos/${alojamentoId.value}`
-        );
-        alojamento.value = response.data;
+        const response = await axiosInstance.get("/home");
+        console.log(response.data); // Verifique a resposta da API
     } catch (error) {
-        console.error("Erro ao buscar alojamento:", error);
+        console.error("Erro ao obter dados:", error); // Exibe erros se houver falhas na requisição
     }
 };
 
-// Verificar disponibilidade
-const verificarDisponibilidade = async () => {
-    if (!checkin.value || !checkout.value || noites.value <= 0) {
-        disponibilidadeChecada.value = false;
-        return;
-    }
-
-    try {
-        loading.value = true;
-        const response = await axiosInstance.post(
-            `/reservas/available/${alojamentoId.value}`,
-            {
-                checkin: checkin.value,
-                checkout: checkout.value,
-            }
-        );
-
-        alojamentoDisponivel.value = response.data.available;
-        disponibilidadeChecada.value = true;
-    } catch (error) {
-        console.error("Erro ao verificar disponibilidade:", error);
-        alojamentoDisponivel.value = false;
-        disponibilidadeChecada.value = true;
-    } finally {
-        loading.value = false;
-    }
-};
-
-// Criar reserva
-const criarReserva = async () => {
-    errors.value = [];
-    successMessage.value = "";
-    loading.value = true;
-
-    try {
-        const response = await axiosInstance.post("/reservas", {
-            alojamento_id: alojamentoId.value,
-            checkin: checkin.value,
-            checkout: checkout.value,
-            hospedes: hospedes.value,
-            observacoes: observacoes.value || null,
-        });
-
-        successMessage.value = "Reserva criada com sucesso!";
-
-        // Redirecionar após 2 segundos
-        setTimeout(() => {
-            router.push({
-                name: "minhas-reservas",
-            });
-        }, 2000);
-    } catch (error) {
-        if (error.response && error.response.data) {
-            // Erros de validação do Laravel
-            if (error.response.data.errors) {
-                errors.value = Object.values(error.response.data.errors).flat();
-            }
-            // Erro customizado (conflito de datas)
-            else if (error.response.data.error) {
-                errors.value = [error.response.data.error];
-            } else {
-                errors.value = ["Erro ao criar reserva. Tente novamente."];
-            }
-        } else {
-            errors.value = ["Erro de conexão. Verifique sua internet."];
-        }
-    } finally {
-        loading.value = false;
-    }
-};
-
-// Executar ao montar o componente
+// Chama a função fetchData quando o componente for montado
 onMounted(() => {
-    buscarAlojamento();
+    fetchData();
 });
 </script>
 

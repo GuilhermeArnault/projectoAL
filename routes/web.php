@@ -22,6 +22,11 @@ Route::get('/reservas', function () {
     return Inertia::render('Reservas');
 });
 
+// Rota para a página de Contactos
+Route::get('/contactos', function () {
+    return Inertia::render('Contactos');  // Aqui estamos renderizando a página de "Contactos"
+});
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),

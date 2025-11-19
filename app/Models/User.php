@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -9,16 +8,17 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     use HasApiTokens;
-
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
+    use HasRoles; // 👈 AQUI é que ligas o Spatie ao User
 
     /**
      * The attributes that are mass assignable.
@@ -29,8 +29,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role',
-
+       
     ];
 
     /**
@@ -67,7 +66,7 @@ class User extends Authenticatable
         ];
     }
 
-     public function reservas() {
+    public function reservas() {
         return $this->hasMany(Reserva::class);
     }
 
@@ -75,8 +74,10 @@ class User extends Authenticatable
         return $this->hasMany(Comentario::class);
     }
 
-    public function isAdmin() {
-        return $this->role === 'admin';
-    }
+    public function isAdmin() : bool {
+        // se já estiveres a usar Spatie, é melhor assim:
+        return $this->hasRole('admin');
 
+        
+    }
 }

@@ -38,31 +38,64 @@ Route::middleware([
     })->name('dashboard');
 });
 
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
-    'role:admin',
-])->prefix('admin')->group(function () {
-    Route::get('/', fn() => Inertia::render('Admin/Dashboard'))->name('admin.dashboard');
-    Route::get('/reservas', fn() => Inertia::render('Admin/ReservasAdmin'))->name('admin.reservas');
-    Route::get('/comentarios', fn() => Inertia::render('Admin/ComentariosAdmin'))->name('admin.comentarios');
-    Route::get('/alojamento', fn() => Inertia::render('Admin/AlojamentoAdmin'))->name('admin.alojamento');
+    'role:admin', 
+])
+    ->prefix('admin')          // todas as rotas começam com /admin
+    ->name('admin.')           // todas as rotas começam com admin.
+    ->group(function () {
 
+        // 👉 /admin  (DASHBOARD)
+        Route::get('/', fn () => Inertia::render('Admin/Dashboard'))
+            ->name('dashboard');
+        Route::get('/reservas', fn () => Inertia::render('Admin/RservasAdmin'))
+            ->name('reservas');
+        Route::get('/alojamento', fn () => Inertia::render('Admin/AlojamentoAdmin'))
+            ->name('alojamento');
+        Route::get('/comentarios', fn () => Inertia::render('Admin/ComentariosAdmin'))
+            ->name('comentarios');
+
+
+        // 👉 /admin/utilizadores  (Página Inertia)
+        Route::get('/utilizadores', fn () => Inertia::render('Admin/Utilizadores/Index'))
+            ->name('utilizadores');
+
+        // 👉 /admin/utilizadores/criar
+        Route::get('/utilizadores/criar', fn () => Inertia::render('Admin/Utilizadores/Create'))
+            ->name('utilizadores.create');
+
+        // 👉 /admin/utilizadores/{id}/editar
+        Route::get('/utilizadores/{id}/editar', fn ($id) => 
+            Inertia::render('Admin/Utilizadores/Edit', ['id' => $id])
+        )->name('utilizadores.edit');
+
+        // Rotas API para utilizadores (para Axios)
+        // 👉 /admin/utilizadores-lista
+        Route::get('/utilizadores-lista', [UtilizadoresController::class, 'index'])
+            ->name('utilizadores.lista');
+
+        // 👉 /admin/utilizadores  (store)
+        Route::post('/utilizadores', [UtilizadoresController::class, 'store'])
+            ->name('utilizadores.store');
+
+        // 👉 /admin/utilizadores/{user}  (show)
+        Route::get('/utilizadores/{user}', [UtilizadoresController::class, 'show'])
+            ->name('utilizadores.show');
+
+        // 👉 /admin/utilizadores/{user}  (update)
+        Route::match(['put', 'patch'], '/utilizadores/{user}', [UtilizadoresController::class, 'update'])
+            ->name('utilizadores.update');
+
+        // 👉 /admin/utilizadores/{user}  (destroy)
+        Route::delete('/utilizadores/{user}', [UtilizadoresController::class, 'destroy'])
+            ->name('utilizadores.destroy');
+    });
     // Página Inertia
-    Route::get('/utilizadores', fn() => Inertia::render('Admin/Utilizadores/Index'))
-        ->name('admin.utilizadores');
-    Route::get('/utilizadores/criar', fn() => Inertia::render('Admin/Utilizadores/Create'))
-        ->name('admin.utilizadores.create');
-    Route::get('/utilizadores/{id}/editar', fn($id) => Inertia::render('Admin/Utilizadores/Edit', ['id' => $id]))
-        ->name('admin.utilizadores.edit');
-    Route::get('/utilizadores-lista', [UtilizadoresController::class, 'index']);
-    Route::post('/utilizadores', [UtilizadoresController::class, 'store']);
-    Route::get('/utilizadores/{user}', [UtilizadoresController::class, 'show']);
-    Route::match(['put', 'patch'], '/utilizadores/{user}', [UtilizadoresController::class, 'update']);
-    Route::delete('/utilizadores/{user}', [UtilizadoresController::class, 'destroy']);
-});
-
+    
 
 Route::get('/alojamentos', function () {
     // Buscar todos os alojamentos

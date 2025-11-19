@@ -27,8 +27,9 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'cliente', // Role default
         ]);
+
+        $user->assignRole('cliente');
 
         // Cria o token para autenticação imediata (opcional)
         $token = $user->createToken('authToken')->plainTextToken;

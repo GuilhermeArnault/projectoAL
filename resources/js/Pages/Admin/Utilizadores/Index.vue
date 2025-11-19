@@ -16,7 +16,7 @@ const fetchUsers = async (page = 1) => {
       params: { page },
     })
 
-    users.value = res.data.data      // por causa do paginate()
+    users.value = res.data.data      
     pagination.value = res.data
   } catch (error) {
     console.error('Erro ao carregar utilizadores:', error)
@@ -61,7 +61,7 @@ onMounted(() => fetchUsers())
       <th class="p-3">Email</th>
       <th class="p-3">Criado em</th>
       <th class="p-3 text-center">Papéis</th>
-      <th class="p-3 text-center w-100">Ações</th> <!-- largura fixa opcional -->
+      <th class="p-3 text-center w-100">Ações</th> 
     </tr>
   </thead>
 
@@ -72,12 +72,12 @@ onMounted(() => fetchUsers())
       <td class="p-3">{{ u.email }}</td>
       <td class="p-3">{{ new Date(u.created_at).toLocaleDateString() }}</td>
 
-      <!-- Papéis centrado -->
+      
       <td class="p-3 text-center">
         {{ u.role }}
       </td>
 
-      <!-- Ações centradas e com espaçamento consistente -->
+     
       <td class="p-3">
         <div class="flex justify-center gap-2">
           <Link

@@ -20,17 +20,22 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        $admin = User::factory()->create([
-            'name' => 'Admin',
-            'email' => 'admin@local.com',
-            'password' => bcrypt('123456'),
-            'role' => 'admin'
-        ]);
+       // $admin = User::factory()->create([
+            //'name' => 'Admin',
+            //'email' => 'admin@local.com',
+          //  'password' => bcrypt('123456'),
+        //    'role' => 'admin'
+      //  ]);
 
-        $aloj = Alojamento::create([
-            'titulo' => 'Casa da Serra',
-            'descricao' => 'Alojamento com vista panorâmica...',
-            'preco_noite' => 90.00,
-        ]);
+       // $aloj = Alojamento::create([
+       //     'titulo' => 'Casa da Serra',
+       //     'descricao' => 'Alojamento com vista panorâmica...',
+       //     'preco_noite' => 90.00,
+       // ]);
+
+
+        $this->call([
+        RolesAndUsersSeeder::class,
+    ]);
     }
 }

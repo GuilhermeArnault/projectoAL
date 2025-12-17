@@ -7,6 +7,7 @@ use App\Models\Alojamento;
 use App\Http\Controllers\Admin\UtilizadoresController;
 use App\Http\Controllers\Admin\AlojamentoController;
 use App\Http\Controllers\Admin\ComentarioController;
+use App\Http\Controllers\Admin\ReservaController;
 
 
 /* Route::get('/', function () {
@@ -55,10 +56,7 @@ Route::middleware([
         //admin  (DASHBOARD)
         Route::get('/', fn () => Inertia::render('Admin/Dashboard'))
             ->name('dashboard');
-        Route::get('/reservas', fn () => Inertia::render('Admin/RservasAdmin'))
-            ->name('reservas');
-        Route::get('/alojamento', fn () => Inertia::render('Admin/AlojamentoAdmin'))
-            ->name('alojamento');
+
         Route::get('/comentarios', fn () => Inertia::render('Admin/ComentariosAdmin'))
             ->name('comentarios');
 
@@ -92,6 +90,25 @@ Route::middleware([
         Inertia::render('Admin/Alojamentos/Edit', ['id' => $id])
     )->name('alojamentos.edit');
 
+      // ---------- Reservas (PAGES) ----------
+
+    Route::get('/reservas', fn () =>
+        Inertia::render('Admin/Reservas/Index')   // <--- o teu componente atual
+    )->name('reservas');
+
+    // Página criar reserva
+    Route::get('/reservas/criar', fn () =>
+        Inertia::render('Admin/Reservas/Create')
+    )->name('reservas.create');
+
+    // Página editar reserva
+    Route::get('/reservas/{id}/editar', fn ($id) =>
+        Inertia::render('Admin/Reservas/Edit', ['id' => $id])
+    )->name('reservas.edit');
+
+
+
+
     // ================================
     //      API INTERNA (JSON)
     // ================================
@@ -118,6 +135,15 @@ Route::middleware([
         Route::post('/comentarios/{comentario}/aprovar', [ComentarioController::class, 'aprovar']);
         Route::delete('/comentarios/{comentario}', [ComentarioController::class, 'destroy']);
         Route::post('/comentarios/{comentario}/responder', [ComentarioController::class, 'responder']);
+
+         // ---------- API RESERVAS (RESTful) ----------
+        Route::get('/reservas', [ReservaController::class, 'index']);          // listar + filtros
+        Route::post('/reservas', [ReservaController::class, 'store']);         // criar reserva
+        Route::get('/reservas/{reserva}', [ReservaController::class, 'show']); // ver detalhes
+        Route::put('/reservas/{reserva}', [ReservaController::class, 'update']); // atualizar
+        Route::delete('/reservas/{reserva}', [ReservaController::class, 'destroy']); // apagar
+        // alterar só o estado (confirmar/cancelar/pendente) — fica top para ações rápidas
+        Route::patch('/reservas/{reserva}/estado', [ReservaController::class, 'updateEstado']);
     
            });
 });

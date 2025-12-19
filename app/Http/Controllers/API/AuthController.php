@@ -17,28 +17,26 @@ class AuthController extends Controller
      */
     public function register(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:users',
+        'password' => 'required|string|min:8|confirmed',
+    ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+    $user = User::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => Hash::make($request->password),
+    ]);
 
-        $user->assignRole('cliente');
+    $user->assignRole('cliente');
 
-        // Cria o token para autenticação imediata (opcional)
-        $token = $user->createToken('authToken')->plainTextToken;
+    Auth::login($user);
 
-        return response()->json([
-            'token' => $token,
-            'user' => $user,
-            'message' => 'Registo efetuado com sucesso.',
-        ], 201);
+    return response()->json([
+        'user' => $user,
+        'message' => 'Registo efetuado com sucesso.',
+    ], 201);
     }
 
     /**
@@ -58,32 +56,30 @@ class AuthController extends Controller
             ]);
         }
 
-        $user = Auth::user();
-        // Remove tokens antigos para manter apenas um ativo por login
-        $user->tokens()->delete(); 
-        $token = $user->createToken('authToken')->plainTextToken;
+        $request->session()->regenerate();
 
         return response()->json([
-            'token' => $token,
-            'user' => $user,
+            'user' => Auth::user(),
             'message' => 'Login efetuado com sucesso.',
         ]);
     }
 
     /**
-     * 🚪 Endpoint: /api/logout (Requer auth:sanctum)
+     * Endpoint: /api/logout (Requer auth:sanctum)
      * Invalida o token atual.
      */
     public function logout(Request $request)
     {
-        // Apaga o token que está a ser usado na requisição
-        $request->user()->currentAccessToken()->delete();
+        Auth::guard('web')->logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
         return response()->json(['message' => 'Logout efetuado com sucesso.']);
     }
 
     /**
-     * 👁️ Endpoint: /api/user (Requer auth:sanctum)
+     *  Endpoint: /api/user (Requer auth:sanctum)
      * Retorna o utilizador autenticado.
      */
     public function user(Request $request)

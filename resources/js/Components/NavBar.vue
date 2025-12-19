@@ -16,9 +16,6 @@ const toggleMobile = () => {
   mobileMenuOpen.value = !mobileMenuOpen.value;
 };
 
-const logout = () => {
-  router.post('/logout');
-};
 
 // Detectar página atual
 const currentUrl = page.url;
@@ -125,12 +122,14 @@ const currentUrl = page.url;
             Minhas Reservas
             </Link>
 
-            <button
-              class="block text-left w-full px-4 py-2 hover:bg-gray-100 text-red-600"
-              @click="logout"
+            <Link
+              href="/logout"
+              method="post"
+              as="button"
+              class="text-red-600 hover:underline block px-4 py-2"
             >
               Logout
-            </button>
+            </Link>
           </div>
         </div>
 
@@ -166,12 +165,14 @@ const currentUrl = page.url;
 
         <Link href="/perfil" class="block py-1 hover:text-accent">Perfil</Link>
 
-        <button
+        <Link
+          href="/logout"
+          method="post"
+          as="button"
           class="mt-2 w-full text-left text-red-600 py-1 hover:text-red-800"
-          @click="logout"
         >
-          Logout
-        </button>
+        Logout  
+        </Link>
       </div>
     </div>
   </header>

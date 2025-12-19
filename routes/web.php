@@ -24,11 +24,11 @@ Route::get('/contactos', fn() => Inertia::render('Contactos'));
 |--------------------------------------------------------------------------
 */
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified'
-])->group(function () {
+    Route::middleware([
+        'auth:sanctum',
+        config('jetstream.auth_session'),
+        'verified'
+    ])->group(function () {
 
     // Página de perfil
     Route::get('/perfil', fn () => Inertia::render('Perfil'))
@@ -37,7 +37,16 @@ Route::middleware([
     // Reservas do utilizador
     Route::get('/perfil/reservas', fn () => Inertia::render('ReservasUser'))
         ->name('perfil.reservas');
-});
+    });
+
+    Route::post('/logout', function (Request $request) {
+    Auth::logout();
+
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+
+    return redirect('/');
+    })->name('logout');
 
 /*
 |--------------------------------------------------------------------------
@@ -94,12 +103,12 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
 |--------------------------------------------------------------------------
 */
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-    'role:admin'
-])->prefix('admin')->name('admin.')->group(function () {
+    Route::middleware([
+        'auth:sanctum',
+        config('jetstream.auth_session'),
+        'verified',
+        'role:admin'
+    ])->prefix('admin')->name('admin.')->group(function () {
 
     // Dashboard Admin
     Route::get('/', fn () => Inertia::render('Admin/Dashboard'))->name('dashboard');
@@ -168,4 +177,5 @@ Route::middleware([
         Route::delete('/comentarios/{comentario}', [ComentarioController::class, 'destroy']);
         Route::post('/comentarios/{comentario}/responder', [ComentarioController::class, 'responder']);
     });
+
 });

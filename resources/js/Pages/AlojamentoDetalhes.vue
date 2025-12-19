@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import axios from "axios";
+import api from "@/axiosFrontend";
 import Navbar from "@/Components/NavBar.vue";
 
 const props = defineProps({
@@ -23,12 +23,12 @@ const verificarDisponibilidade = async () => {
   }
 
   try {
-    const res = await axios.post(`/api/reservas/available/${props.alojamento.id}`, {
-      data_inicio: checkin.value,
-      data_fim: checkout.value,
+    const res = await api.post(  `/reservas/available/${props.alojamento.id}`, {
+      checkin: checkin.value,
+      checkout: checkout.value,
     });
 
-    if (res.data.disponivel) {
+    if (res.data.available) {
       disponibilidadeMsg.value = "Quarto disponível!";
     } else {
       erroMsg.value = "Este quarto não está disponível nestas datas.";
@@ -42,19 +42,25 @@ const reservar = async () => {
   erroMsg.value = null;
 
   try {
-    const res = await axios.post("/api/reservas", {
+
+    const res = await api.post("/reservas", {
       alojamento_id: props.alojamento.id,
-      data_inicio: checkin.value,
-      data_fim: checkout.value,
+      checkin: checkin.value,
+      checkout: checkout.value,
+      hospedes: 1
     });
 
-    reservaId.value = res.data.id;
+    const redirectUrl = res.data.redirect;
 
-    window.location.href = `/perfil/reservas`;
+    // Redirecionar para o checkout
+    window.location.href = redirectUrl;
+
   } catch (err) {
-    erroMsg.value = "Erro ao criar reserva.";
+    console.error(err);
+    erroMsg.value = err.response?.data?.error || "Erro ao criar reserva.";
   }
 };
+
 </script>
 
 <template>

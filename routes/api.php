@@ -6,10 +6,9 @@ use App\Http\Controllers\Api\MeteoController;
 use App\Http\Controllers\Api\ReservaController;
 use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\CurrencyController;
-use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\AlojamentoController;
 use App\Http\Controllers\Api\ComentarioController;
-use App\Http\Controllers\Admin\ComentariosController;
+use App\Http\Controllers\Admin\ComentarioController as ComentariosController;
 use App\Http\Controllers\Admin\UtilizadoresController;
 
 /*
@@ -26,8 +25,6 @@ Route::get('/alojamentos/{id}', [AlojamentoController::class, 'show']);
 
 Route::post('/reservas/available/{alojamentoId}', [ReservaController::class, 'available']);
 
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
 
 Route::get('/comentarios', [ComentarioController::class, 'index']);
 Route::get('/comentarios/{id}', [ComentarioController::class, 'show']);
@@ -66,7 +63,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     // Logout
-    Route::post('/logout', [AuthController::class, 'logout']);
+    //Route::post('/logout', [AuthController::class, 'logout']);
 });
 
 /*

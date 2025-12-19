@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { Head, Link } from '@inertiajs/vue3'
-import axiosInstance from '../axios' // Importa a configuração do Axios
+import axiosInstance from '../axiosFrontend' // Importa a configuração do Axios
 
 //  Define as props (como tinhas)
 defineProps({

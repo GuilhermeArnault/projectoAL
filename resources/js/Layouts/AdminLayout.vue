@@ -44,7 +44,6 @@ const props = defineProps({
 })
 
 const logout = () => {
-  localStorage.removeItem('token')
-  window.location.href = '/'
+  router.post(route('logout'))
 }
 </script>

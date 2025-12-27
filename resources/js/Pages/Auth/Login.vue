@@ -1,5 +1,7 @@
 <script setup>
 import { useForm } from '@inertiajs/vue3'
+import { ref, onMounted } from 'vue'
+import axiosInstance from '../../axiosFrontend'
 
 defineProps({
   canResetPassword: Boolean,
@@ -54,7 +56,7 @@ const logout = () => {
     console.log('✅ Logout local efetuado')
 
     // Logout via Laravel API (opcional)
-    axios.post('/logout').then(() => {
+    axiosInstance.post('/logout').then(() => {
         console.log('✅ Logout API efetuado')
     }).catch((error) => {
         console.error('❌ Erro ao fazer logout na API', error)

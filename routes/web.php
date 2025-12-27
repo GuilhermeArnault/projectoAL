@@ -7,11 +7,8 @@ use App\Models\Alojamento;
 use App\Http\Controllers\Admin\UtilizadoresController;
 use App\Http\Controllers\Admin\AlojamentoController;
 use App\Http\Controllers\Admin\ComentarioController;
-<<<<<<< HEAD
 use App\Http\Controllers\Admin\ReservaController;
 use App\Http\Controllers\CompleteRegistrationController;
-=======
->>>>>>> parent of 6c2ac1c (reservas)
 
 /*
 |--------------------------------------------------------------------------
@@ -118,36 +115,23 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         //admin  (DASHBOARD)
         Route::get('/', fn () => Inertia::render('Admin/Dashboard'))
             ->name('dashboard');
-        Route::get('/reservas', fn () => Inertia::render('Admin/RservasAdmin'))
-            ->name('reservas');
-        Route::get('/alojamento', fn () => Inertia::render('Admin/AlojamentoAdmin'))
-            ->name('alojamento');
+    
         Route::get('/comentarios', fn () => Inertia::render('Admin/ComentariosAdmin'))
-            ->name('comentarios');
+        ->name('comentarios');
 
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | UTILIZADORES – Páginas Admin
-    |--------------------------------------------------------------------------
-    */
-    Route::get('/utilizadores', fn() => Inertia::render('Admin/Utilizadores/Index'))
+        // PÁGINAS (Utilizadores)
+        Route::get('/utilizadores', fn () => Inertia::render('Admin/Utilizadores/Index'))
         ->name('utilizadores');
 
-    Route::get('/utilizadores/criar', fn() => Inertia::render('Admin/Utilizadores/Create'))
+        Route::get('/utilizadores/create', fn () => Inertia::render('Admin/Utilizadores/Create'))
         ->name('utilizadores.create');
 
-    Route::get('/utilizadores/{id}/editar', fn($id) =>
-        Inertia::render('Admin/Utilizadores/Edit', ['id' => $id])
-    )->name('utilizadores.edit');
-
-    /*
-    |--------------------------------------------------------------------------
-    | ALOJAMENTOS – Páginas Admin
-    |--------------------------------------------------------------------------
-    */
-    Route::get('/alojamentos', fn () =>
+        Route::get('/utilizadores/{id}/edit', fn ($id) => Inertia::render('Admin/Utilizadores/Edit', [
+        'id' => $id
+]))
+        ->name('utilizadores.edit');
+        // PÁGINAS (Alojamentos)
+        Route::get('/alojamentos', fn () =>
         Inertia::render('Admin/Alojamentos/Index')
     )->name('alojamentos');
 
@@ -158,10 +142,9 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::get('/alojamentos/{id}/editar', fn ($id) =>
         Inertia::render('Admin/Alojamentos/Edit', ['id' => $id])
     )->name('alojamentos.edit');
+    
 
-<<<<<<< HEAD
-      // ---------- Reservas (PAGES) ----------
-
+    // PÁGINAS (Reservas)
     Route::get('/reservas', fn () =>
         Inertia::render('Admin/Reservas/Index')   // <--- o teu componente atual
     )->name('reservas');
@@ -176,24 +159,16 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Inertia::render('Admin/Reservas/Edit', ['id' => $id])
     )->name('reservas.edit');
 
+});
 
 
 
+   
+    
+    
       // ---------- Reservas (PAGES) ----------
 
-    Route::get('/reservas', fn () =>
-        Inertia::render('Admin/Reservas/Index')   // <--- o teu componente atual
-    )->name('reservas');
-
-    // Página criar reserva
-    Route::get('/reservas/criar', fn () =>
-        Inertia::render('Admin/Reservas/Create')
-    )->name('reservas.create');
-
-    // Página editar reserva
-    Route::get('/reservas/{id}/editar', fn ($id) =>
-        Inertia::render('Admin/Reservas/Edit', ['id' => $id])
-    )->name('reservas.edit');
+    
 
 
 
@@ -203,40 +178,23 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     | API ADMIN (JSON)
     |--------------------------------------------------------------------------
     */
-=======
-    // ================================
-    //      API INTERNA (JSON)
-    // ================================
->>>>>>> parent of 6c2ac1c (reservas)
-    Route::prefix('api')->group(function () {
+    
 
-        // Utilizadores API
-        Route::get('/utilizadores', [UtilizadoresController::class, 'index']);
-        Route::post('/utilizadores', [UtilizadoresController::class, 'store']);
-        Route::get('/utilizadores/{user}', [UtilizadoresController::class, 'show']);
-        Route::put('/utilizadores/{user}', [UtilizadoresController::class, 'update']);
-        Route::delete('/utilizadores/{user}', [UtilizadoresController::class, 'destroy']);
+        // // Utilizadores API
+        // Route::get('/utilizadores', [UtilizadoresController::class, 'index']);
+        // Route::post('/utilizadores', [UtilizadoresController::class, 'store']);
+        // Route::get('/utilizadores/{user}', [UtilizadoresController::class, 'show']);
+        // Route::put('/utilizadores/{user}', [UtilizadoresController::class, 'update']);
+        // Route::delete('/utilizadores/{user}', [UtilizadoresController::class, 'destroy']);
 
         // Alojamentos API
-        Route::get('/alojamentos', [AlojamentoController::class, 'index']);
-        Route::post('/alojamentos', [AlojamentoController::class, 'store']);
-        Route::get('/alojamentos/{alojamento}', [AlojamentoController::class, 'show']);
-        Route::put('/alojamentos/{alojamento}', [AlojamentoController::class, 'update']);
-        Route::delete('/alojamentos/{alojamento}', [AlojamentoController::class, 'destroy']);
-        Route::post('/alojamentos/{alojamento}/fotos', [AlojamentoController::class, 'uploadFotos']);
-        Route::delete('/alojamentos/fotos/{foto}', [AlojamentoController::class, 'deleteFoto']);
+        // Route::get('/alojamentos', [AlojamentoController::class, 'index']);
+        // Route::post('/alojamentos', [AlojamentoController::class, 'store']);
+        // Route::get('/alojamentos/{alojamento}', [AlojamentoController::class, 'show']);
+        // Route::put('/alojamentos/{alojamento}', [AlojamentoController::class, 'update']);
+        // Route::delete('/alojamentos/{alojamento}', [AlojamentoController::class, 'destroy']);
+        // Route::post('/alojamentos/{alojamento}/fotos', [AlojamentoController::class, 'uploadFotos']);
+        // Route::delete('/alojamentos/fotos/{foto}', [AlojamentoController::class, 'deleteFoto']);
 
-        // Comentários API
-        Route::get('/comentarios', [ComentarioController::class, 'index']);
-        Route::post('/comentarios/{comentario}/aprovar', [ComentarioController::class, 'aprovar']);
-        Route::delete('/comentarios/{comentario}', [ComentarioController::class, 'destroy']);
-        Route::post('/comentarios/{comentario}/responder', [ComentarioController::class, 'responder']);
-<<<<<<< HEAD
-    });
+        
 
-});
-=======
-    
-           });
-});
->>>>>>> parent of 6c2ac1c (reservas)

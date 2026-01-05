@@ -9,6 +9,8 @@ use App\Http\Controllers\Admin\AlojamentoController;
 use App\Http\Controllers\Admin\ComentarioController;
 use App\Http\Controllers\Admin\ReservaController;
 use App\Http\Controllers\CompleteRegistrationController;
+use App\Http\Controllers\Api\PaymentController;
+
 
 
 /*
@@ -119,6 +121,13 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         ]);
     })
     ->name('checkout');
+
+Route::get('/paypal/success/{pagamento}', [PaymentController::class, 'success'])
+    ->name('paypal.success');
+
+Route::get('/paypal/cancel/{pagamento}', [PaymentController::class, 'cancel'])
+    ->name('paypal.cancel');
+
 
 
 /*

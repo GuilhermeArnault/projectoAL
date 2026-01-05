@@ -1,10 +1,6 @@
 <script setup>
 import { ref } from "vue";
-<<<<<<< HEAD
 import axios from "../axiosFrontend";
-=======
-import axios from "@/axiosFrontend";
->>>>>>> 7f9635dc78603787a66da7412d704c63a88d8224
 import Navbar from "@/Components/NavBar.vue";
 
 const props = defineProps({

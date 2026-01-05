@@ -40,11 +40,31 @@ return [
         'city' => env('OPENWEATHER_CITY', 'Peso da Régua'),
     ],
     
-    'easypay' => [
+/*     
+'easypay' => [
         'base_url'   => env('EASYPAY_BASE_URL', 'https://api.test.easypay.pt/2.0'),
         'api_key'    => env('EASYPAY_API_KEY'),
         'account_id' => env('EASYPAY_ACCOUNT_ID'),
     ],
+*/
+
+'paypal' => [
+    'mode'    => env('PAYPAL_MODE', 'sandbox'), 
+    'sandbox' => [
+        'client_id'     => env('PAYPAL_SANDBOX_CLIENT_ID'),
+        'client_secret' => env('PAYPAL_SANDBOX_CLIENT_SECRET'),
+    ],
+    'live' => [
+        'client_id'     => env('PAYPAL_LIVE_CLIENT_ID'),
+        'client_secret' => env('PAYPAL_LIVE_CLIENT_SECRET'),
+    ],
+    'payment_action' => 'Sale',
+    'currency'       => 'EUR',
+    'notify_url'     => '',
+    'locale'         => 'pt_PT',
+],
+
+
 
 
 

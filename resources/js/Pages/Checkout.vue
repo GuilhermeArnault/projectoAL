@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from "vue"
-import { router, usePage, Link } from "@inertiajs/vue3"
+import { usePage } from "@inertiajs/vue3"
 import Navbar from "@/Components/NavBar.vue"
 import axios from "@/axiosFrontend"
 
@@ -10,6 +10,8 @@ const reserva = ref(null)
 const pagando = ref(false)
 const erro = ref(null)
 const sucesso = ref(null)
+
+
 
 onMounted(async () => {
   const id = page.url.split("/").pop()
@@ -32,11 +34,7 @@ const pagar = async () => {
 
     console.log("Pagamento criado:", res.data)
 
-    if (res.data.payment_url) {
-      window.location.href = res.data.payment_url
-    } else {
-      sucesso.value = "Pagamento criado com sucesso."
-    }
+    window.location.href = res.data.payment_url
 
   } catch (e) {
     erro.value = "Erro ao criar pagamento."
@@ -77,7 +75,7 @@ const pagar = async () => {
           :disabled="pagando"
           class="bg-accent text-dark px-6 py-2 rounded-md font-semibold hover:bg-yellow-300 disabled:opacity-50"
         >
-          Pagar com MBWay
+          Pagar com PayPal
         </button>
       </div>
 

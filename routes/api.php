@@ -103,7 +103,7 @@ Route::middleware(['auth:sanctum','role:admin'])
         Route::put('/alojamentos/{alojamento}', [AdminAlojamentoController::class, 'update']);
         Route::delete('/alojamentos/{alojamento}', [AdminAlojamentoController::class, 'destroy']);
         Route::post('/alojamentos/{alojamento}/fotos', [AdminAlojamentoController::class, 'uploadFotos']);
-        Route::delete('/alojamentos/fotos/{foto}', [AlojamentoController::class, 'deleteFoto']);
+        Route::delete('/alojamentos/fotos/{foto}', [AdminAlojamentoController::class, 'deleteFoto']);
         Route::get('/options/alojamentos', [AdminAlojamentoController::class, 'options']);
 
 

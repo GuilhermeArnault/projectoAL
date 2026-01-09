@@ -18,13 +18,13 @@
     <!-- Conteúdo principal -->
     <main class="flex-1 p-6 overflow-y-auto">
       <header class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-semibold text-[#616160]">{{ title }}</h1>
-        <button
-          @click="logout"
-          class="px-3 py-1 bg-[#e6e019] text-[#616160] font-bold rounded hover:bg-[#b9bda5]"
-        >
-          Logout
-        </button>
+        <h1 class="font-semibold text-[#616160]">{{ title }}</h1>
+        <Link
+  href="/"
+  class="px-3 py-1 bg-[#e6e019] text-[#616160] font-bold rounded hover:bg-[#b9bda5]"
+>
+  Home
+    </Link> 
       </header>
 
       <slot />
@@ -33,8 +33,8 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
 import { Link } from '@inertiajs/vue3'
+
 
 const props = defineProps({
   title: {
@@ -43,7 +43,6 @@ const props = defineProps({
   },
 })
 
-const logout = () => {
-  router.post(route('logout'))
-}
+
+
 </script>

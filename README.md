@@ -28,7 +28,7 @@ O projeto foi desenvolvido no contexto académico, com foco em usabilidade, orga
 - Frontend: HTML, CSS, JavaScript
 - Backend: (ex.: PHP / Laravel / ASP.NET)
 - Base de Dados: MySQL
-- Outros: Bootstrap / Tailwind (se aplicável)
+- Outros: Bootstrap / Tailwind
 
 ## 📐 Aspetos de Design e Usabilidade
 - Interface intuitiva
@@ -40,4 +40,4 @@ O projeto foi desenvolvido no contexto académico, com foco em usabilidade, orga
 Projeto concluído para fins académicos, com possibilidade de expansão futura (pagamentos online, avaliações, notificações).
 
 ## 👨‍🎓 Contexto Académico
-Desenvolvido no âmbito da unidade curricular de Desenvolvimento Web / Comunicação e Multimédia.
+Desenvolvido no âmbito da unidade curricular de Projeto Multimédia.

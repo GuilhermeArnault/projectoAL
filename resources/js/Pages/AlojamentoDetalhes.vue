@@ -135,6 +135,7 @@ const reservar = async () => {
   <Navbar />
 
   <div class="max-w-6xl mx-auto mt-28 px-4">
+    <pre>{{ alojamento.comentarios }}</pre>
 
     <!-- TÍTULO -->
     <h1 class="text-3xl md:text-4xl font-bold mb-6">

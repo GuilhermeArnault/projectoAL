@@ -5,7 +5,7 @@
     <!-- Hero Section -->
     <section class="relative h-[80vh] flex items-center justify-center text-center text-white mt-20">
       <img
-        src="/images/hero.jpg"
+        src="/images/IMG_3528.JPG"
         alt="Paisagem de alojamento"
         class="absolute inset-0 w-full h-full object-cover brightness-75"
       />
@@ -15,7 +15,7 @@
           Desfruta de alojamentos únicos e acolhedores, onde conforto e natureza se encontram.
         </p>
         <a
-          href="/reservas"
+          href="/alojamentos"
           class="bg-accent text-dark font-semibold px-8 py-3 rounded-lg shadow hover:bg-yellow-300 transition"
         >
           Reservar Agora
@@ -36,7 +36,7 @@
     </section>
 
     <!-- Destaques -->
-    <section class="bg-secondary text-dark py-20 px-6 md:px-20">
+    <!-- <section class="bg-secondary text-dark py-20 px-6 md:px-20">
       <h2 class="text-3xl font-bold text-center mb-10">Os Nossos Destaques</h2>
       <div class="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
         <div
@@ -54,7 +54,7 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
 
     <!-- Rodapé -->
     <footer class="bg-dark text-white text-center py-6 text-sm">
@@ -69,7 +69,7 @@ import { onMounted } from 'vue';
 import axiosInstance from '../axiosFrontend';  // Importa a configuração do Axios
 import Navbar from '../Components/NavBar.vue'; 
 
-// Variáveis e dados diretamente no script setup
+/* // Variáveis e dados diretamente no script setup
 let alojamentos = [
   {
     titulo: "Quarto do Sol",
@@ -89,7 +89,7 @@ let alojamentos = [
     preco: 150,
     imagem: "/images/casa3.jpg",
   },
-];
+]; */
 
 // Função fetchData para fazer a chamada à API
 const fetchData = async () => {

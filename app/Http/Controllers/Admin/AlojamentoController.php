@@ -50,7 +50,7 @@ class AlojamentoController extends Controller
             'preco_noite' => 'required|numeric|min:0',
 
             // fotos opcionais no create
-            'fotos.*'     => 'nullable|image|max:4096',
+            'fotos.*'     => 'nullable|mimes:jpg,jpeg,png,webp|max:4096',
         ]);
 
         // 1) criar alojamento

@@ -142,8 +142,7 @@ const currentUrl = page.url;
       class="md:hidden bg-white shadow-md border-t py-4 px-6 space-y-4 text-dark font-semibold text-lg"
     >
       <Link href="/" class="block hover:text-accent">Início</Link>
-      <Link href="/alojamentos" class="block hover:text-accent">Alojamentos</Link>
-      <Link href="/reservas" class="block hover:text-accent">Reservas</Link>
+      <Link href="/alojamentos" class="block hover:text-accent">Quartos</Link>
       <Link href="/contactos" class="block hover:text-accent">Contactos</Link>
 
       <Link

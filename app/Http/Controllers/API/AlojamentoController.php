@@ -43,11 +43,14 @@ class AlojamentoController extends Controller
         // Buscar o alojamento pelo ID
 
         //$alojamento = Alojamento::findOrFail($id);
-
-        $alojamento = Alojamento::with('fotos')->findOrFail($id);
+        $alojamento = Alojamento::with([
+            'fotos',
+            'comentarios' => fn ($q) =>
+            $q->where('aprovado', true)->with('user')
+        ])->findOrFail($id);
 
         return Inertia::render('AlojamentoDetalhes', [
-            'alojamento' => $alojamento,
+            'alojamento' => $alojamento,    
         ]);
     }
 

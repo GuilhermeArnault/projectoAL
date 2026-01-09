@@ -6,30 +6,49 @@ use App\Http\Controllers\Controller;
 use App\Models\Comentario;
 use App\Http\Requests\StoreComentarioRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+
 
 class ComentarioController extends Controller
 {
-    // 🔹 Listar todos os comentários
+    // Listar todos os comentários
     public function index()
     {
         return response()->json(Comentario::all());
     }
 
-    // 🔹 Mostrar um comentário específico
+    // Mostrar um comentário específico
     public function show($id)
     {
         return response()->json(Comentario::findOrFail($id));
     }
 
-    // 🔹 Criar um novo comentário (com validação)
+    //  Criar um novo comentário (com validação)
     public function store(StoreComentarioRequest $request)
     {
-        $dados = $request->validated();
-        $comentario = Comentario::create($dados);
-        return response()->json($comentario, 201);
+/*     $request->validate([
+        'alojamento_id' => 'required|exists:alojamentos,id',
+        'titulo' => 'required|string|max:255',
+        'texto' => 'required|string',
+        'rating' => 'required|integer|min:1|max:5',
+    ]); */
+
+
+    Comentario::create([
+        'user_id' => auth()->id(),
+        'alojamento_id' => $request->alojamento_id,
+        'titulo' => $request->titulo,
+        'texto' => $request->texto,
+        'rating' => $request->rating,
+        'aprovado' => false,
+    ]);
+
+    return response()->json([
+        'message' => 'Comentário enviado com sucesso.'
+    ], 201);
     }
 
-    // 🔹 Atualizar um comentário
+    // Atualizar um comentário
     public function update(StoreComentarioRequest $request, $id)
     {
         $comentario = Comentario::findOrFail($id);
@@ -37,7 +56,7 @@ class ComentarioController extends Controller
         return response()->json($comentario);
     }
 
-    // 🔹 Eliminar um comentário
+    // Eliminar um comentário
     public function destroy($id)
     {
         $comentario = Comentario::findOrFail($id);

@@ -8,13 +8,12 @@ class StoreComentarioRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true;
+        return auth()->check();
     }
 
     public function rules(): array
     {
         return [
-            'user_id' => 'required|exists:users,id',
             'alojamento_id' => 'required|exists:alojamentos,id',
             'titulo' => 'required|string|max:255',
             'texto' => 'required|string|max:1000',
@@ -27,8 +26,6 @@ class StoreComentarioRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'user_id.required' => 'O utilizador é obrigatório.',
-            'user_id.exists' => 'O utilizador indicado não existe.',
             'alojamento_id.required' => 'O alojamento é obrigatório.',
             'alojamento_id.exists' => 'O alojamento indicado não existe.',
             'titulo.required' => 'O título é obrigatório.',

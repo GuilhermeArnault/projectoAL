@@ -112,11 +112,48 @@ import Navbar from '../Components/NavBar.vue';
 
 // --- Estado da FAQ ---
 const faqs = ref([
-  { question: 'Qual é o horário de atendimento?', answer: 'Nosso suporte está disponível de segunda a sexta, das 9h às 18h, horário de Lisboa.', isOpen: false },
-  { question: 'Como faço para rastrear meu pedido?', answer: 'Você receberá um email com o código de rastreio assim que o pedido for enviado. O rastreamento pode levar até 24h para ser atualizado.', isOpen: false },
-  { question: 'Posso devolver um produto?', answer: 'Sim, aceitamos devoluções em até 30 dias após o recebimento, desde que o produto esteja na condição original. Consulte nossa política de devolução para mais detalhes.', isOpen: false },
-  { question: 'Quais métodos de pagamento são aceitos?', answer: 'Aceitamos cartões de crédito (Visa, MasterCard, Amex), PayPal e transferência bancária.', isOpen: false }
-]);
+  {
+    question: 'Qual é o horário de check-in e check-out?',
+    answer: 'O check-in é realizado a partir das 15h e o check-out deve ser feito até às 11h. Caso necessites de um horário diferente, entra em contacto connosco para verificarmos a disponibilidade.',
+    isOpen: false
+  },
+  {
+    question: 'Como posso fazer uma reserva?',
+    answer: 'Podes reservar diretamente no nosso site selecionando as datas desejadas e o número de hóspedes. Após a confirmação da disponibilidade, serás encaminhado para o pagamento.',
+    isOpen: false
+  },
+  {
+    question: 'Quais métodos de pagamento são aceites?',
+    answer: 'Aceitamos pagamentos por Paypal.',
+    isOpen: false
+  },
+  {
+    question: 'Posso cancelar a minha reserva?',
+    answer: 'Sim. O cancelamento é possível de acordo com as condições da reserva e desde que seja feito antes da data de check-in. Consulta os detalhes da tua reserva para mais informações.',
+    isOpen: false
+  },
+  {
+    question: 'O alojamento inclui pequeno-almoço?',
+    answer: 'Não, o pequeno-almoço não está incluído. No entanto, o alojamento dispõe de cozinha equipada para tua conveniência.',
+    isOpen: false
+  },
+  {
+    question: 'São permitidos animais de estimação?',
+    answer: 'De momento, não são permitidos animais de estimação no alojamento.',
+    isOpen: false
+  },
+  {
+    question: 'Existe estacionamento disponível?',
+    answer: 'Sim, disponibilizamos estacionamento gratuito para os nossos hóspedes.',
+    isOpen: false
+  },
+  {
+    question: 'Como posso entrar em contacto convosco?',
+    answer: 'Podes entrar em contacto através da página de Contactos ou por email/telefone indicados no site.',
+    isOpen: false
+  }
+])
+
 
 // --- Função da FAQ ---
 const toggleFAQ = (index) => {

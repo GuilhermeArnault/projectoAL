@@ -46,7 +46,7 @@ class ReservaController extends Controller
         $data['user_id'] = auth()->id();
         $data['estado'] = 'pendente';
         $data['referencia'] = $this->gerarReferencia();
-        $data['total'] = $this->calcularPreco($data['checkin'], $data['checkout'], $alojamento->id);
+        $data['total'] = $this->calcularPreco($data['checkin'], $data['checkout'], $alojamento);
         //$data['total'] = 10.00;
 
         $reserva = Reserva::create($data);
@@ -60,6 +60,7 @@ class ReservaController extends Controller
             'redirect' => url("/checkout/{$reserva->id}"),
         ], 201);
     }
+    
 
     public function update(Request $request, $id)
     {
@@ -115,6 +116,52 @@ class ReservaController extends Controller
         $reserva->update(['estado' => 'cancelado']);
         return response()->json(['message' => 'Reserva cancelada.']);
     }
+public function available(Request $request, $alojamentoId)
+{
+    // Validar datas
+    $data = $request->validate([
+        'checkin' => 'required|date|after_or_equal:today',
+        'checkout' => 'required|date|after:checkin',
+    ]);
+
+    // Buscar alojamento
+    $alojamento = Alojamento::findOrFail($alojamentoId);
+
+    // Verificar conflitos
+    $available = !$this->hasDateConflict(
+        $alojamentoId,
+        $data['checkin'],
+        $data['checkout']
+    );
+
+    // Calcular total apenas se disponível
+    $total = null;
+    if ($available) {
+        $total = $this->calcularPreco(
+            $data['checkin'],
+            $data['checkout'],
+            $alojamento
+        );
+    }
+
+    
+    \Log::info('AVAILABLE CHECK', [
+        'alojamento_id' => $alojamentoId,
+        'checkin' => $data['checkin'],
+        'checkout' => $data['checkout'],
+        'available' => $available,
+        'total' => $total,
+    ]);
+
+
+    return response()->json([
+        'available' => $available,
+        'total' => $total,
+        'message' => $available
+            ? 'O alojamento está disponível!'
+            : 'O alojamento não está disponível nesse período.'
+    ]);
+}
 
 
     public function indexAdmin()
@@ -138,26 +185,6 @@ class ReservaController extends Controller
         ]);
     }
 
-    public function available(Request $request, $alojamentoId)
-    {
-    $data = $request->validate([
-        'checkin' => 'required|date|after_or_equal:today',
-        'checkout' => 'required|date|after:checkin',
-    ]);
-
-    $available = !$this->hasDateConflict(
-        $alojamentoId,
-        $data['checkin'],
-        $data['checkout']
-    );
-
-    return response()->json([
-        'available' => $available,
-        'message' => $available
-            ? 'O alojamento está disponível!'
-            : 'O alojamento não está disponível nesse período.'
-    ]);
-    }
 
 
     private function hasDateConflict($alojamentoId, $inicio, $fim, $excludeId = null)
@@ -179,7 +206,7 @@ class ReservaController extends Controller
     private function calcularPreco($inicio, $fim, $alojamento)
     {
         $dias = (new \DateTime($inicio))->diff(new \DateTime($fim))->days;
-        return $dias * ($alojamento->preco_noite ?? 40);
+        return $dias * ($alojamento->preco_noite);
     }
 
     private function gerarReferencia()

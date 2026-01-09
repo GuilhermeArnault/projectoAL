@@ -1,138 +1,79 @@
 <script setup>
-import { ref } from "vue";
-import axios from "../axiosFrontend";
+import { ref, onMounted } from "vue";
+import axios from "@/axiosFrontend";
 import Navbar from "@/Components/NavBar.vue";
 
-const props = defineProps({
-  id: Number,
-  quarto: Object,
+const reservas = ref([]);
+const erro = ref(null);
+
+onMounted(async () => {
+  try {
+    const res = await axios.get("/reservas/me");
+    reservas.value = res.data;
+  } catch (e) {
+    erro.value = "Erro ao obter reservas.";
+  }
 });
-
-// Datas escolhidas pelo utilizador
-const checkin = ref("");
-const checkout = ref("");
-
-// Resposta do backend
-const disponibilidade = ref(null);
-const erro = ref("");
-const loading = ref(false);
-
-// Passo 1 — Verificar disponibilidade
-const verificarDisponibilidade = async () => {
-  erro.value = "";
-  disponibilidade.value = null;
-
-  if (!checkin.value || !checkout.value) {
-    erro.value = "Selecione ambas as datas.";
-    return;
-  }
-
-  loading.value = true;
-
-  try {
-    const res = await axios.post(`/api/reservas/available/${alojamento_id}`, {
-      checkin: checkin.value,
-      checkout: checkout.value,
-    });
-
-    disponibilidade.value = res.data;
-  } catch (e) {
-    erro.value = "Datas indisponíveis.";
-  } finally {
-    loading.value = false;
-  }
-};
-
-// Passo 2 — Criar a reserva
-const criarReserva = async () => {
-  try {
-    const res = await axios.post("/api/reservas", {
-      alojamento_id: props.id,
-      checkin: checkin.value,
-      checkout: checkout.value,
-    });
-
-    // Ir para o checkout com o ID da reserva
-    window.location.href = `/pagamento/${res.data.reserva.id}`;
-
-  } catch (e) {
-    erro.value = "Erro ao criar reserva.";
-  }
-};
 </script>
 
 <template>
   <Navbar />
 
-  <div class="max-w-5xl mx-auto mt-28 px-4">
-    <h1 class="text-3xl font-bold text-dark mb-4">
-      {{ quarto.titulo }}
+  <div class="max-w-4xl mx-auto mt-28 px-4">
+    <h1 class="text-3xl font-bold text-dark mb-6">
+      As minhas reservas
     </h1>
 
-    <img
-      v-if="quarto.foto_principal"
-      :src="quarto.foto_principal"
-      class="w-full h-80 object-cover rounded mb-6"
-    />
+    <!-- ERRO -->
+    <p v-if="erro" class="text-red-600">
+      {{ erro }}
+    </p>
 
-    <p class="text-gray-700 mb-6">{{ quarto.descricao }}</p>
+    <!-- SEM RESERVAS -->
+    <p v-else-if="reservas.length === 0" class="text-gray-600">
+      Não tens reservas.
+    </p>
 
-    <!-- FORMULÁRIO DATAS -->
-    <div class="bg-white shadow p-6 rounded-lg">
-      <h2 class="text-xl font-semibold mb-4">Reserva</h2>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-        <!-- Check-in -->
-        <div>
-          <label class="font-medium">Check-in</label>
-          <input
-            type="date"
-            v-model="checkin"
-            class="w-full border rounded px-3 py-2"
-          />
-        </div>
-
-        <!-- Check-out -->
-        <div>
-          <label class="font-medium">Check-out</label>
-          <input
-            type="date"
-            v-model="checkout"
-            class="w-full border rounded px-3 py-2"
-          />
-        </div>
-
-      </div>
-
-      <!-- Botão verificar -->
-      <button
-        @click="verificarDisponibilidade"
-        class="mt-4 bg-primary text-white px-5 py-2 rounded hover:bg-secondary"
+    <!-- LISTA DE RESERVAS -->
+    <div
+      v-else
+      v-for="reserva in reservas"
+      :key="reserva.id"
+      class="bg-white shadow rounded p-6 mb-4"
+    >
+      <h2
+        v-if="reserva.alojamento"
+        class="text-xl font-semibold text-dark"
       >
-        Verificar Disponibilidade
-      </button>
+        {{ reserva.alojamento.titulo }}
+      </h2>
 
-      <!-- Erro -->
-      <p v-if="erro" class="text-red-600 mt-3">{{ erro }}</p>
+      <p class="text-gray-600">
+        {{ reserva.checkin }} → {{ reserva.checkout }}
+      </p>
 
-      <!-- Resultado -->
-      <div v-if="disponibilidade" class="mt-4">
-        <p class="text-green-700 font-semibold">
-          ✔ O quarto está disponível!
-        </p>
+      <p class="mt-2 font-bold">
+        Total: {{ reserva.total }} €
+      </p>
 
-        <p class="text-lg font-bold mt-2">
-          Total: {{ disponibilidade.total }} €
-        </p>
-
-        <button
-          @click="criarReserva"
-          class="mt-4 bg-accent text-dark px-6 py-2 rounded font-semibold hover:bg-yellow-300"
-        >
-          Reservar agora
-        </button>
-      </div>
+      <p
+        class="mt-1 font-medium"
+        :class="{
+          'text-yellow-600': reserva.estado === 'pendente',
+          'text-green-600': reserva.estado === 'confirmada',
+          'text-red-600': reserva.estado === 'cancelada'
+        }"
+      >
+        Estado: {{ reserva.estado }}
+      </p>
+        <!-- BOTÃO PAGAMENTO -->
+      <button
+    v-if="reserva.estado === 'pendente'"
+    @click="pagar(reserva.id)"
+    class="mt-4 bg-accent text-dark px-5 py-2 rounded font-semibold hover:bg-yellow-300"
+  >
+    Pagar agora
+  </button>
 
     </div>
   </div>
@@ -141,11 +82,5 @@ const criarReserva = async () => {
 <style scoped>
 .text-dark {
   color: #616160;
-}
-.bg-primary {
-  background-color: #9faea0;
-}
-.bg-secondary {
-  background-color: #b9bda5;
 }
 </style>

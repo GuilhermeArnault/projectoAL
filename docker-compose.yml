@@ -26,6 +26,7 @@ services:
     volumes:
       - ./:/var/www
       - ./docker/nginx/conf.d:/etc/nginx/conf.d
+      
     networks:
       - laravel
 
@@ -68,6 +69,8 @@ services:
       PMA_PASSWORD: root
     networks:
       - laravel
+
+
     
 
 

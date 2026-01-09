@@ -38,8 +38,17 @@ class DashboardController extends Controller
                 return max(0, $checkin->diffInDays($checkout));
             });
 
-        $capacidadeNoites = max(1, $alojamentosAtivos * $noitesNoMes);
-        $ocupacaoPercent  = round(($noitesReservadas / $capacidadeNoites) * 100, 1);
+       $quartosTotal = Alojamento::count();
+
+        $quartosOcupadosHoje = Reserva::query()
+    ->whereDate('checkin', '<=', $today)
+    ->whereDate('checkout', '>', $today)   
+    ->distinct('alojamento_id')
+    ->count('alojamento_id');
+
+        $ocupacaoHojePercent = $quartosTotal > 0
+    ? round(($quartosOcupadosHoje / $quartosTotal) * 100, 1)
+    : 0;
 
         // Comentários pendentes (no teu model é boolean aprovado)
         $comentariosPendentes = Comentario::where('aprovado', false)->count();
@@ -108,7 +117,7 @@ class DashboardController extends Controller
             'kpis' => [
                 'reservas_mes'          => $reservasMes,
                 'receita_mes'           => $receitaMes,
-                'ocupacao_percent'      => $ocupacaoPercent,
+                'ocupacao_percent'      => $ocupacaoHojePercent,
                 'comentarios_pendentes' => $comentariosPendentes,
                 'alojamentos'           => $alojamentosAtivos,
             ],

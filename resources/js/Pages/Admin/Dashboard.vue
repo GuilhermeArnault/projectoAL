@@ -69,7 +69,7 @@ const fmtMoney = (v) => {
         </div>
 
         <div class="bg-white rounded shadow p-4">
-          <div class="text-sm text-gray-500">Ocupação</div>
+          <div class="text-sm text-gray-500">Ocupação (hoje)</div>
           <div class="text-2xl font-semibold">{{ data.kpis.ocupacao_percent }}%</div>
         </div>
 

@@ -29,9 +29,11 @@ class CompleteRegistrationNotification extends Notification
         );
 
         return (new MailMessage)
-            ->subject('Confirmar email e completar registo')
-            ->line('Para ativar a tua conta, confirma o email e completa o registo (telemóvel + NIF).')
+            ->subject('Ativar a tua conta em Marão à Vista')
+            ->greeting('Olá!')
+            ->line('Para ativares a tua conta, confirma o email e completa o registo.')
             ->action('Completar registo', $url)
             ->line('Se não criaste conta, ignora este email.');
+            ->
     }
 }

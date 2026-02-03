@@ -22,14 +22,13 @@ const currentUrl = page.url;
 </script>
 
 <template>
-  <header class="bg-white shadow-md fixed top-0 left-0 w-full z-50">
+  <header class="bg-[#603813] shadow-md fixed top-0 left-0 w-full z-50">
     <nav class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
     
       
       <!-- LOGO -->
       <div class="flex items-center space-x-3">
-        <img src="/images/logo.jpg" alt="Logo" class="h-10 w-auto" />
-        <span class="text-2xl font-bold text-dark">Marão à Vista</span>
+        <img src="/images/logo_ma_branco.png" alt="Logo" class="h-auto w-60" />
       </div>
 
       <!-- BOTÃO MOBILE -->
@@ -44,7 +43,7 @@ const currentUrl = page.url;
       </button>
 
       <!-- LINKS DESKTOP -->
-      <ul class="hidden md:flex space-x-8 text-dark font-semibold text-lg">
+      <ul class="hidden md:flex space-x-8 text-dark font-semibold text-2xl">
         
         <li>
           <Link
@@ -72,7 +71,7 @@ const currentUrl = page.url;
         <li v-if="user?.roles?.some(r => r.name === 'admin')">
           <Link
             href="/admin"
-            :class="currentUrl.startsWith('/admin') ? 'text-red-600 underline' : 'text-red-600 hover:text-red-800'"
+            :class="currentUrl.startsWith('/admin') ? 'text-yellow-600 underline' : 'text-yellow-600 hover:text-red-800'"
           >
             Admin
           </Link>
@@ -83,19 +82,19 @@ const currentUrl = page.url;
       <div class="relative hidden md:block">
         
         <!-- LOGIN -->
-        <Link
-          v-if="!user"
-          href="/login"
-          class="bg-accent text-dark px-6 py-2 rounded-md font-semibold text-lg hover:bg-yellow-300 transition"
-        >
-          Login
-        </Link>
+  <Link
+    v-if="!user"
+    href="/login"
+    class="bg-white text-[#603813] px-6 py-2 rounded-md font-semibold text-2xl hover:bg-black hover:text-white transition"
+  >
+    Login
+  </Link>
 
         <!-- MENU DO UTILIZADOR -->
         <div v-else class="relative">
           <button
             @click="toggleMenu"
-            class="flex items-center space-x-2 font-semibold text-lg hover:text-accent transition"
+            class="flex items-center space-x-2 font-semibold text-2xl hover:text-accent transition text-white"
           >
             <span>Olá, {{ user.name }}</span>
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -139,7 +138,7 @@ const currentUrl = page.url;
     <!-- MENU MOBILE -->
     <div
       v-if="mobileMenuOpen"
-      class="md:hidden bg-white shadow-md border-t py-4 px-6 space-y-4 text-dark font-semibold text-lg"
+      class="md:hidden bg-#603813 shadow-md border-t py-4 px-6 space-y-4 text-white font-semibold text-2xl"
     >
       <Link href="/" class="block hover:text-accent">Início</Link>
       <Link href="/alojamentos" class="block hover:text-accent">Quartos</Link>
@@ -156,11 +155,11 @@ const currentUrl = page.url;
       <Link
         v-if="!user"
         href="/login"
-        class="block bg-accent text-dark text-center py-2 rounded-md"
+        class="block bg-white text-[#603813] text-center py-2 rounded-md"
       >Login</Link>
 
       <div v-else>
-        <p class="font-medium mb-2">Olá, {{ user.name }}</p>
+        <p class="font-medium text-white mb-2">Olá, {{ user.name }}</p>
 
         <Link href="/perfil" class="block py-1 hover:text-accent">Perfil</Link>
 
@@ -179,9 +178,9 @@ const currentUrl = page.url;
 
 <style scoped>
 .text-dark {
-  color: #616160;
+  color: #ffffff;
 }
 .bg-accent {
-  background-color: #e6e019;
+  background-color: #000000;
 }
 </style>

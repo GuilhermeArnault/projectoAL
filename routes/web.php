@@ -10,6 +10,9 @@ use App\Http\Controllers\Admin\ComentarioController;
 use App\Http\Controllers\Admin\ReservaController;
 use App\Http\Controllers\CompleteRegistrationController;
 use App\Http\Controllers\Api\PaymentController;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+use App\Http\Controllers\PerfilController;
 
 
 
@@ -128,6 +131,17 @@ Route::get('/paypal/success/{pagamento}', [PaymentController::class, 'success'])
 Route::get('/paypal/cancel/{pagamento}', [PaymentController::class, 'cancel'])
     ->name('paypal.cancel');
 
+
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified'
+])->group(function () {
+
+    Route::post('/perfil/update', [PerfilController::class, 'update'])
+        ->name('perfil.update');
+});
 
 
 /*

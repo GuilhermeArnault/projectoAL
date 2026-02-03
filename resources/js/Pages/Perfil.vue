@@ -80,12 +80,13 @@ const submit = () => {
 
         <!-- Botão -->
         <div class="pt-4">
-          <button
-            type="submit"
-            class="bg-accent text-dark px-6 py-2 rounded-md font-semibold hover:bg-yellow-300"
-          >
-            Guardar Alterações
-          </button>
+  <button
+    type="submit"
+    class="bg-[#603813] text-white px-6 py-2 rounded-md font-semibold hover:bg-black disabled:opacity-50"
+    :disabled="form.processing"
+  >
+    Guardar Alterações
+  </button>
         </div>
 
       </form>

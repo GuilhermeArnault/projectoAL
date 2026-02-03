@@ -5,8 +5,8 @@
     <main class="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8 pt-24"> 
       
       <header class="text-center mb-12">
-        <h1 class="text-5xl font-serif font-semibold text-gray-900 mb-2">CONTACTOS</h1>
-        <p class="text-sm text-gray-600">Se tiver alguma dúvida ou precisar de ajuda, entre em contato conosco.</p>
+        <h1 class="text-5xl font-serif font-semibold text-[#603813] mb-2"><br> CONTACTOS</h1>
+        <p class="text-lg text-gray-600">Se tiver alguma dúvida ou precisar de ajuda, entre em contato conosco.</p>
       </header>
       
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
@@ -82,8 +82,8 @@
       <hr class="border-gray-200 my-12" />
       
       <section class="text-center mb-12">
-        <h2 class="text-4xl font-serif font-semibold text-gray-900 mb-2">FAQ</h2>
-        <p class="text-sm text-gray-600">Perguntas frequentes para tirar suas dúvidas.</p>
+        <h2 class="text-5xl font-serif font-semibold text-[#603813] mb-2">FAQ</h2>
+        <p class="text-lg text-gray-600">Perguntas frequentes para tirar suas dúvidas.</p>
       </section>
       
       <div class="space-y-4">

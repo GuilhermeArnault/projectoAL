@@ -115,7 +115,7 @@ const prevPhoto = (alojamento) => {
 
             <Link
               :href="`/alojamentos/${q.id}`"
-              class="mt-auto bg-primary text-white text-center py-2 rounded-md hover:bg-secondary transition"
+              class="mt-auto bg-[#603813] text-white text-center py-2 rounded-md px-6 py-2 rounded-md font-semibold text-lg hover:bg-black hover:text-white transition"
             >
               Ver Detalhes
             </Link>
@@ -128,7 +128,7 @@ const prevPhoto = (alojamento) => {
 
 <style scoped>
 .text-dark {
-  color: #616160;
+  color: #603813;
 }
 .bg-primary {
   background-color: #9faea0;
@@ -137,6 +137,6 @@ const prevPhoto = (alojamento) => {
   background-color: #b9bda5;
 }
 .text-accent {
-  color: #e6e019;
+  color: #603813;
 }
 </style>

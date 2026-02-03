@@ -26,6 +26,25 @@ const comentarioErro = ref(null)
 const comentarioSucesso = ref(null)
 const aEnviar = ref(false)
 
+const fotoAtual = ref(0)
+
+const nextFoto = () => {
+  if (fotoAtual.value < props.alojamento.fotos.length - 1) {
+    fotoAtual.value++
+  } else {
+    fotoAtual.value = 0
+  }
+}
+
+const prevFoto = () => {
+  if (fotoAtual.value > 0) {
+    fotoAtual.value--
+  } else {
+    fotoAtual.value = props.alojamento.fotos.length - 1
+  }
+} 
+
+
 const enviarComentario = async () => {
 
   console.log({
@@ -53,7 +72,7 @@ const enviarComentario = async () => {
 
     comentarioSucesso.value = "Comentario enviado para aprovação"
 
-        // limpar formulário
+    // limpar formulário
     tituloComentario.value = ""
     textoComentario.value = ""
     rating.value = 5
@@ -138,97 +157,64 @@ const reservar = async () => {
     <pre>{{ alojamento.comentarios }}</pre>
 
     <!-- TÍTULO -->
-    <h1 class="text-3xl md:text-4xl font-bold mb-6">
+    <h1 class="text-3xl md:text-4xl font-bold mb-6 text-[#603813] text-center">
       {{ alojamento.titulo }}
     </h1>
 
     <!-- GALERIA -->
-    <div
-      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 mb-8"
-    >
-      <img
-        v-for="(foto, i) in alojamento.fotos"
-        :key="i"
-        :src="`/storage/${foto.path}`"
-        class="w-full h-56 object-cover rounded-lg"
-      />
-    </div>
+<!-- CARROSSEL -->
+<div class="relative w-full h-[840px] mb-10 rounded-xl overflow-hidden shadow-lg">
 
-    <!-- CONTEÚDO + RESERVA -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+  <!-- IMAGEM -->
+  <img
+    :src="`/storage/${alojamento.fotos[fotoAtual].path}`"
+    class="w-full h-full object-cover transition-all duration-300"
+  />
 
-      <!-- DESCRIÇÃO -->
-      <div class="lg:col-span-2">
-        <p class="text-gray-700 mb-6">
-          {{ alojamento.descricao }}
-        </p>
-      </div>
+  <!-- BOTÃO ESQUERDA -->
+  <button
+    @click="prevFoto"
+    class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/60 text-white p-3 rounded-full hover:bg-black transition"
+  >
+    ‹
+  </button>
 
-      <!-- CAIXA RESERVA -->
-      <div class="bg-white p-6 rounded-lg shadow h-fit">
-        <h2 class="text-xl font-semibold mb-4">
-          Reservar
-        </h2>
+  <!-- BOTÃO DIREITA -->
+  <button
+    @click="nextFoto"
+    class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/60 text-white p-3 rounded-full hover:bg-black transition"
+  >
+    ›
+  </button>
 
-        <!-- Datas -->
-        <label class="block font-medium mb-1">Check-in</label>
-        <input
-          type="date"
-          v-model="checkin"
-          class="w-full border rounded px-3 py-2 mb-3"
-        />
+  <!-- INDICADORES -->
+  <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
+    <span
+      v-for="(foto, i) in alojamento.fotos"
+      :key="i"
+      @click="fotoAtual = i"
+      class="w-3 h-3 rounded-full cursor-pointer"
+      :class="fotoAtual === i ? 'bg-white' : 'bg-white/50'"
+    ></span>
+  </div>
 
-        <label class="block font-medium mb-1">Check-out</label>
-        <input
-          type="date"
-          v-model="checkout"
-          class="w-full border rounded px-3 py-2 mb-3"
-        />
+</div>
+<!-- DESCRIÇÃO -->
+<div class="mb-10 text-lg text-gray-700">
+  <p>
+    {{ alojamento.descricao }}
+  </p>
+</div>
 
-        <!-- HÓSPEDES -->
-        <label class="block font-medium mb-1">Hóspedes</label>
-        <select
-          v-model="hospedes"
-          class="w-full border rounded px-3 py-2 mb-4"
-        >
-          <option :value="1">1</option>
-          <option :value="2">2</option>
-        </select>
 
-        <!-- BOTÕES -->
-        <button
-          @click="verificarDisponibilidade"
-          class="w-full bg-primary text-white py-2 rounded mb-3"
-        >
-          Verificar disponibilidade
-        </button>
+<!-- COMENTÁRIOS + RESERVA -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 text-lg">
 
-        <p
-          v-if="disponibilidadeMsg"
-          class="text-green-600 font-semibold mb-3"
-        >
-          {{ disponibilidadeMsg }}
-        </p>
+  <!-- COMENTÁRIOS -->
+  <div class="lg:col-span-2">
 
-        <p
-          v-if="erroMsg"
-          class="text-red-600 font-semibold mb-3"
-        >
-          {{ erroMsg }}
-        </p>
-
-        <button
-          v-if="disponibilidadeMsg"
-          @click="reservar"
-          class="w-full bg-accent text-dark py-2 rounded font-semibold"
-        >
-          Reservar agora
-        </button>
-      </div>
-    </div>
-
-    <!-- COMENTÁRIOS -->
-    <div class="mt-12">
+    <!-- LISTA DE COMENTÁRIOS -->
+    <div class="mb-12">
       <h2 class="text-2xl font-semibold mb-4">
         Avaliações
       </h2>
@@ -251,67 +237,106 @@ const reservar = async () => {
           <p>{{ c.texto }}</p>
         </div>
       </div>
-<!-- ADICIONAR COMENTÁRIO -->
-<div class="mt-10 bg-white p-6 rounded-lg shadow">
+    </div>
 
-  <h3 class="text-xl font-semibold mb-4">
-    Avaliar este alojamento
-  </h3>
+    <!-- ADICIONAR COMENTÁRIO -->
+    <div class="bg-white p-6 rounded-lg shadow">
+      <h3 class="text-xl font-semibold mb-4">
+        Avaliar este alojamento
+      </h3>
 
-  <div v-if="page.props.auth?.user">
+      <div v-if="page.props.auth?.user">
 
-    <!-- TÍTULO -->
-    <label class="block font-medium mb-1">Título</label>
-    <input
-      v-model="tituloComentario"
-      type="text"
-      class="w-full border rounded px-3 py-2 mb-3"
-      placeholder="Ex: Excelente estadia!"
-    />
+        <label class="block font-medium mb-1">Título</label>
+        <input
+          v-model="tituloComentario"
+          type="text"
+          class="w-full border rounded px-3 py-2 mb-3"
+        />
 
-    <!-- RATING -->
-    <label class="block font-medium mb-1">Avaliação</label>
-    <select
-      v-model="rating"
-      class="w-full border rounded px-3 py-2 mb-3"
-    >
-      <option v-for="n in 5" :key="n" :value="n">
-        {{ n }} ⭐
-      </option>
-    </select>
+        <label class="block font-medium mb-1">Avaliação</label>
+        <select
+          v-model="rating"
+          class="w-full border rounded px-3 py-2 mb-3"
+        >
+          <option v-for="n in 5" :key="n" :value="n">
+            {{ n }} ⭐
+          </option>
+        </select>
 
-    <!-- TEXTO -->
-    <label class="block font-medium mb-1">Comentário</label>
-    <textarea
-      v-model="textoComentario"
-      rows="4"
-      class="w-full border rounded px-3 py-2 mb-3"
-      placeholder="Descreve a tua experiência…"
-    ></textarea>
+        <label class="block font-medium mb-1">Comentário</label>
+        <textarea
+          v-model="textoComentario"
+          rows="4"
+          class="w-full border rounded px-3 py-2 mb-3"
+        ></textarea>
 
-    <p v-if="comentarioErro" class="text-red-600 mb-2">
-      {{ comentarioErro }}
-    </p>
+        <p v-if="comentarioErro" class="text-red-600 mb-2">
+          {{ comentarioErro }}
+        </p>
 
-    <p v-if="comentarioSucesso" class="text-green-600 mb-2">
-      {{ comentarioSucesso }}
-    </p>
+        <p v-if="comentarioSucesso" class="text-green-600 mb-2">
+          {{ comentarioSucesso }}
+        </p>
 
-    <button
-      @click="enviarComentario"
-      :disabled="aEnviar"
-      class="bg-primary text-white px-5 py-2 rounded hover:bg-secondary disabled:opacity-50"
-    >
-      Enviar avaliação
-    </button>
-  </div>
+        <button
+          @click="enviarComentario"
+          :disabled="aEnviar"
+          class="bg-primary text-white px-5 py-2 rounded hover:bg-black disabled:opacity-50"
+        >
+          Enviar avaliação
+        </button>
+      </div>
 
-  <p v-else class="text-gray-600">
-    Inicia sessão para deixar uma avaliação.
-  </p>
-</div>
-
+      <p v-else class="text-gray-600">
+        Inicia sessão para deixar uma avaliação.
+      </p>
     </div>
 
   </div>
+
+  <!-- CAIXA RESERVA -->
+  <div class="bg-white p-6 rounded-lg shadow h-fit sticky top-28">
+    <h2 class="text-xl font-semibold mb-4">
+      Reservar
+    </h2>
+
+    <label class="block font-medium mb-1">Check-in</label>
+    <input type="date" v-model="checkin" class="w-full border rounded px-3 py-2 mb-3" />
+
+    <label class="block font-medium mb-1">Check-out</label>
+    <input type="date" v-model="checkout" class="w-full border rounded px-3 py-2 mb-3" />
+
+    <label class="block font-medium mb-1">Hóspedes</label>
+    <select v-model="hospedes" class="w-full border rounded px-3 py-2 mb-4">
+      <option :value="1">1</option>
+      <option :value="2">2</option>
+    </select>
+
+    <button
+      @click="verificarDisponibilidade"
+      class="w-full bg-primary text-white py-2 rounded mb-3 hover:bg-black"
+    >
+      Verificar disponibilidade
+    </button>
+
+    <p v-if="disponibilidadeMsg" class="text-green-600 font-semibold mb-3">
+      {{ disponibilidadeMsg }}
+    </p>
+
+    <p v-if="erroMsg" class="text-red-600 font-semibold mb-3">
+      {{ erroMsg }}
+    </p>
+
+    <button
+      v-if="disponibilidadeMsg"
+      @click="reservar"
+      class="w-full bg-accent text-dark py-2 rounded font-semibold"
+    >
+      Reservar agora
+    </button>
+  </div>
+
+</div>
+    </div>
 </template>

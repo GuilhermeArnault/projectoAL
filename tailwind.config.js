@@ -15,13 +15,13 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ["Inter", "sans-serif"],
+                sans: ["'Baskerville Old Face'", "serif"],
             },
             colors: {
-                primary: "#9faea0",
-                secondary: "#b9bda5",
-                dark: "#616160",
-                accent: "#e6e019",
+                primary: "#603813",
+                secondary: "#ffffff",
+                dark: "#000000",
+                accent: "#7d7d7d",
       },
         },
     },

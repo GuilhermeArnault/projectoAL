@@ -13,18 +13,30 @@ class CompleteRegistrationController extends Controller
 {
     public function show(Request $request, $id, $hash)
     {
+        // ✅ garante que o link é assinado e não expirou
+        if (! $request->hasValidSignature()) {
+            abort(403, 'Link inválido ou expirado.');
+        }
+
         $user = User::findOrFail($id);
 
+        // ✅ valida o hash do email
         if (! hash_equals((string) $hash, sha1($user->getEmailForVerification()))) {
             abort(403, 'Link inválido.');
         }
 
-        // Marca email como verificado ao abrir o link
+        // ✅ se já tiver concluído, não faz sentido mostrar o formulário
+        if ($user->is_approved) {
+            return redirect()->route('login')->with('status', 'Conta já ativa. Já podes fazer login.');
+        }
+
+        // ✅ marca o email como verificado ao abrir o link
         if (is_null($user->email_verified_at)) {
             $user->forceFill(['email_verified_at' => now()])->save();
             event(new Verified($user));
         }
 
+        // ✅ gera URL assinada para o POST (form submit)
         $postUrl = URL::temporarySignedRoute(
             'complete-registration.store',
             now()->addMinutes(60),
@@ -39,10 +51,20 @@ class CompleteRegistrationController extends Controller
 
     public function store(Request $request, $id, $hash)
     {
+        // ✅ também valida assinatura aqui (POST assinado)
+        if (! $request->hasValidSignature()) {
+            abort(403, 'Link inválido ou expirado.');
+        }
+
         $user = User::findOrFail($id);
 
         if (! hash_equals((string) $hash, sha1($user->getEmailForVerification()))) {
             abort(403, 'Link inválido.');
+        }
+
+        // ✅ evita re-submeter se já estiver aprovado
+        if ($user->is_approved) {
+            return redirect()->route('login')->with('status', 'Conta já ativa. Já podes fazer login.');
         }
 
         $validated = $request->validate([

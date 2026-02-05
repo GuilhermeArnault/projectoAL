@@ -26,14 +26,6 @@ Route::get('/', fn() => Inertia::render('Home'));
 Route::get('/reservas', fn() => Inertia::render('Reservas'));
 Route::get('/contactos', fn() => Inertia::render('Contactos'));
 
-/*
-|---------------------------------------------------------------------------
-|
-|---------------------------------------------------------------------------
-*/
-Route::get('/complete-registration', function () {
-        return 'Conta criada com sucesso. Pode fechar esta página.';
-})->name('complete-registration.show');
 
 
 

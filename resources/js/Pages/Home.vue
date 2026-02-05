@@ -3,13 +3,13 @@
     <Navbar />
 
     <!-- Hero Section -->
-    <section class="relative h-[90vh]  flex items-center justify-center text-center text-white mt-20">
+    <section class="relative h-[90vh] flex items-center justify-center text-center text-white mt-20">
       <img
         src="/images/IMG_3528.JPG"
         alt="Paisagem de alojamento"
         class="absolute inset-0 w-full h-full object-cover brightness-75"
       />
-      <div class="relative z-10">
+      <div class="relative z-10 px-4">
         <h1 class="text-5xl font-bold mb-4">O Teu Refúgio Perfeito</h1>
         <p class="text-lg mb-6 max-w-2xl mx-auto">
           Desfruta de alojamentos únicos e acolhedores, onde conforto e natureza se encontram.
@@ -31,85 +31,122 @@
           Descubra o lugar perfeito para desligar da rotina e respirar a tranquilidade da serra. No Marão à Vista, cada detalhe foi pensado para que desfrute de uma estadia acolhedora, confortável e com uma vista de cortar a respiração.
           Aqui, podes acordar com o silêncio da montanha, sentir o ar puro e apreciar o pôr-do sol sobre o Marão diretamente da varanda. A casa tem duas suítes e três quartos, uma
           cozinha, uma sala de estar com vista para a serra, e um pátio equipado com barbecue. Não esquecendo do jardim com piscina e com vista para a serra do marão.
-          Pode ser alugada por quartos ou a casa toda. A casa fica situada em Poiares da Régua, entre a cidade do peso da régua e vila real. Fica muito perto dos miradouros de São Bernardo, Galafura e o da Formiga, Canelas.
-          Seja para uma escapadinha romântica, uns dias em família ou simplesmente para recarregar energias, o Marão á Vista oferece o ambiente ideal. Próximo de trilhos, miradouros e pontos de interesse local, é a base perfeita para explorar o melhor da serra, ou simplesmente para não fazer nada e aproveitar a paz do lugar.
-          Reserva já a tua estadia e deixa-te envolver pela magia da montanha.
+          Pode ser alugada por quartos ou a casa toda. A casa fica situada em Poiares da Régua, entre a cidade do peso da régua e vila real. Fica muito perto dos miradouros de São Leornardo, Galafura e o da Formiga, Canelas.
+          Seja para uma escapadinha romântica, uns dias em família ou simplesmente para recarregar energias, o Marão á Vista oferece o ambiente ideal. Próximo de trilhos, miradouros e pontos de interesse local, é a base perfeita para explorar o
+          melhor da serra, ou simplesmente para não fazer nada e aproveitar a paz do lugar. Reserva já a tua estadia e deixa-te envolver pela magia da montanha.
           Marão à Vista ”onde a natureza entra pela janela.
         </p>
       </div>
     </section>
 
-    <!-- Destaques -->
-    <!-- <section class="bg-secondary text-dark py-20 px-6 md:px-20">
-      <h2 class="text-3xl font-bold text-center mb-10">Os Nossos Destaques</h2>
-      <div class="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
-        <div
-          v-for="(item, index) in alojamentos"
-          :key="index"
-          class="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition"
-        >
-          <img :src="item.imagem" alt="Alojamento" class="h-56 w-full object-cover" />
-          <div class="p-6">
-            <h3 class="text-xl font-semibold mb-2">{{ item.titulo }}</h3>
-            <p class="text-dark/70 mb-4">{{ item.descricao }}</p>
-            <p class="text-lg font-bold text-accent">
-              {{ item.preco }}€/noite
-            </p>
-          </div>
-        </div>
+   <!-- Slider elegante em modo CARD -->
+<section class="bg-white pb-24 px-6">
+  <div class="max-w-6xl mx-auto flex justify-center">
+    <div
+      class="
+        relative
+        w-full
+        max-w-[360px]
+        sm:max-w-[420px]
+        md:max-w-[520px]
+        aspect-[4/5]
+        rounded-3xl
+        overflow-hidden
+        shadow-xl
+        transition
+        duration-500
+        hover:scale-[1.015]
+      "
+    >
+      <!-- IMAGEM -->
+      <img
+        :src="items[currentIndex].image"
+        alt="Imagem do alojamento"
+        class="absolute inset-0 w-full h-full object-cover"
+      />
+
+      <!-- Overlay suave (elegância sem mudar cores) -->
+      <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent"></div>
+
+      <!-- BOTÃO ESQUERDA -->
+      <button
+        @click="prev"
+        class="
+          absolute
+          left-4
+          top-1/2
+          -translate-y-1/2
+          w-11
+          h-11
+          rounded-full
+          bg-black/50
+          backdrop-blur-sm
+          text-white
+          flex
+          items-center
+          justify-center
+          text-xl
+          hover:bg-black
+          transition
+        "
+        aria-label="Anterior"
+      >
+        ‹
+      </button>
+
+      <!-- BOTÃO DIREITA -->
+      <button
+        @click="next"
+        class="
+          absolute
+          right-4
+          top-1/2
+          -translate-y-1/2
+          w-11
+          h-11
+          rounded-full
+          bg-black/50
+          backdrop-blur-sm
+          text-white
+          flex
+          items-center
+          justify-center
+          text-xl
+          hover:bg-black
+          transition
+        "
+        aria-label="Seguinte"
+      >
+        ›
+      </button>
+
+      <!-- INDICADORES -->
+      <div
+        class="
+          absolute
+          bottom-5
+          left-1/2
+          -translate-x-1/2
+          flex
+          gap-2
+          px-4
+          py-2
+          rounded-full
+          bg-black/40
+          backdrop-blur-sm
+        "
+      >
+        <span
+          v-for="(_, i) in items"
+          :key="i"
+          @click="currentIndex = i"
+          class="w-2.5 h-2.5 rounded-full cursor-pointer transition"
+          :class="currentIndex === i ? 'bg-white' : 'bg-white/50'"
+        ></span>
       </div>
-    </section> -->
-<div   class="
-    relative
-    w-full
-    sm:w-[90%]
-    md:w-[60%]
-    lg:w-[28%]
-    sm:h-[20%]
-    md:h-[20%]
-    lg:h-full
-    mx-auto
-    overflow-hidden
-    rounded-xl
-    shadow-lg
-  ">
-
-  <!-- ITEM ATUAL -->
-  <div class="w-full h-full">
-    <img
-      :src="items[currentIndex].image"
-      class="w-full h-full object-cover"
-    />
+    </div>
   </div>
-
-  <!-- BOTÃO ESQUERDA -->
-  <button
-    @click="prev"
-    class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/60 text-white p-3 rounded-full hover:bg-black"
-  >
-    ‹
-  </button>
-
-  <!-- BOTÃO DIREITA -->
-  <button
-    @click="next"
-    class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/60 text-white p-3 rounded-full hover:bg-black"
-  >
-    ›
-  </button>
-
-  <!-- INDICADORES -->
-  <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
-    <span
-      v-for="(_, i) in items"
-      :key="i"
-      @click="currentIndex = i"
-      class="w-3 h-3 rounded-full cursor-pointer"
-      :class="currentIndex === i ? 'bg-white' : 'bg-white/50'"
-    ></span>
-  </div>
-
-</div>
+</section>
 
     <!-- Rodapé -->
     <footer class="bg-[#603813] text-white text-center py-6 text-sm">

@@ -34,6 +34,5 @@ class CompleteRegistrationNotification extends Notification
             ->line('Para ativares a tua conta, confirma o email e completa o registo.')
             ->action('Completar registo', $url)
             ->line('Se não criaste conta, ignora este email.');
-            ->
     }
 }
